@@ -10,13 +10,83 @@
         body { font-family: 'Noto Nastaliq Urdu', serif; }
     </style>
 </head>
-<body class="bg-slate-100 min-h-screen flex items-center justify-center p-4">
-    <div class="bg-white p-6 rounded-2xl shadow-xl w-full max-w-md text-center">
-        <h1 class="text-2xl font-bold text-emerald-700 mb-4">ٹرک مینجمنٹ سسٹم</h1>
-        <p class="text-slate-600 mb-6">ایپ کامیابی کے ساتھ بن رہی ہے! اگلا مرحلہ شروع کرنے کے لیے تیار ہیں۔</p>
-        <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-xl text-emerald-800 font-semibold">
-            سسٹم بالکل ٹھیک کام کر رہا ہے!
+<body class="bg-slate-100 min-h-screen p-4 flex items-center justify-center">
+    <div id="app" class="w-full max-w-md bg-white rounded-2xl shadow-xl p-6">
+        <!-- لاگ ان اسکرین -->
+        <div id="login-screen">
+            <h1 class="text-2xl font-bold text-emerald-700 text-center mb-2">🚛 ٹرک مینجمنٹ سسٹم</h1>
+            <p class="text-center text-slate-500 mb-6 text-sm">پنجاب و خیبر پختونخوا ٹرانسپورٹ پورٹل</p>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">یوزر نام / فون نمبر</label>
+                    <input type="text" id="username" placeholder="یوزر نام درج کریں" class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">پاس ورڈ</label>
+                    <input type="password" id="password" placeholder="پاس ورڈ درج کریں" class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none">
+                </div>
+                <button onclick="handleLogin()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition shadow-lg">
+                    لاگ ان کریں
+                </button>
+            </div>
+            
+            <div class="mt-6 p-4 bg-slate-50 rounded-xl text-xs text-slate-600 space-y-1">
+                <p><strong>ایڈمن لاگ ان:</strong> admin / 1234</p>
+                <p><strong>ڈرائیور 1 (ٹرک 1):</strong> driver1 / 1111</p>
+            </div>
+        </div>
+
+        <!-- ڈ্যাশবোর্ড اسکرین (شروعاتی خاکہ) -->
+        <div id="dashboard-screen" class="hidden">
+            <div class="flex justify-between items-center mb-6 border-b pb-4">
+                <h2 id="welcome-text" class="text-xl font-bold text-slate-800">خوش آمدید</h2>
+                <button onclick="logout()" class="bg-red-500 text-white px-3 py-1.5 rounded-lg text-sm font-semibold">لاگ آؤٹ</button>
+            </div>
+            <div id="dashboard-content" class="space-y-4">
+                <!-- یہاں ڈرائیور اور ایڈمن کے الگ الگ آپشنز آئیں گے -->
+            </div>
         </div>
     </div>
+
+    <script>
+        function handleLogin() {
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value.trim();
+
+            if((user === 'admin' && pass === '1234') || (user === 'driver1' && pass === '1111')) {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('dashboard-screen').classList.remove('hidden');
+                document.getElementById('welcome-text').innerText = user === 'admin' ? '👑 ایڈمن ڈیش بورڈ' : '🚚 ڈرائیور 1 پینل';
+                
+                let content = document.getElementById('dashboard-content');
+                if(user === 'admin') {
+                    content.innerHTML = `
+                        <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl">
+                            <h3 class="font-bold text-emerald-800 mb-2">ایڈمن کنٹرول پینل</h3>
+                            <p class="text-sm text-slate-600">تمام 4 ٹرکوں کا حساب، لائیو لوکیشن اور ماہانہ/سالانہ منافع یہاں شو ہوگا۔</p>
+                        </div>
+                    `;
+                } else {
+                    content.innerHTML = `
+                        <div class="p-4 bg-blue-50 border border-blue-200 rounded-xl">
+                            <h3 class="font-bold text-blue-800 mb-2">نیا ٹریپ شروع کریں</h3>
+                            <p class="text-sm text-slate-600 mb-3">یہاں سے کرایہ، ڈیزل، چالان اور رسیدوں کی انٹری شروع ہوگی۔</p>
+                            <button class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold">ٹریپ فارم کھولیں</button>
+                        </div>
+                    `;
+                }
+            } else {
+                alert('गलत یوزر نام یا پاس ورڈ! براہ کرم دوبارہ کوشش کریں۔');
+            }
+        }
+
+        function logout() {
+            document.getElementById('dashboard-screen').classList.add('hidden');
+            document.getElementById('login-screen').classList.remove('hidden');
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+    </script>
 </body>
 </html>
